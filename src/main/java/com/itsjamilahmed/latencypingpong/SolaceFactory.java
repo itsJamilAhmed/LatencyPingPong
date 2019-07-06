@@ -21,7 +21,6 @@ public class SolaceFactory implements Runnable {
 	private Map<String,Object> parameters;				// These control what the Factory needs to create
 	private JCSMPSession session;						// There will be a shared Solace session per Factory. (1 connection to the message router used.)
 	private XMLMessageProducer producer;							// Only one producer can exist per session, so need to share that too!
-	private BlockingQueue<PingPongMessage> pongMessageOutputQueue;		// A queue to hold messages that need to be reflected back out to the network
 	private BlockingQueue<PingPongMessage> pingMessageProcessingQueue;	// A queue to hold messages that have been reflected back to the original source
 	// TODO: Explore other better queue options for this?
 	
@@ -32,10 +31,7 @@ public class SolaceFactory implements Runnable {
 		
 		final int initialQueueSize = 100;				// Should be large enough to not fill up and block.
 		this.parameters = parameters;
-		pongMessageOutputQueue = new ArrayBlockingQueue<PingPongMessage>(initialQueueSize);
 		pingMessageProcessingQueue = new ArrayBlockingQueue<PingPongMessage>(initialQueueSize);
-
-		
 	}
 	
 	private boolean createSolaceSession () {
@@ -43,7 +39,6 @@ public class SolaceFactory implements Runnable {
 		
 		// This method can be called multiple times until the session is created and successfully connected.
 		// Will return true when all successful.
-		
 		
 		if (!sessionCreated)
 		{
@@ -158,7 +153,7 @@ public class SolaceFactory implements Runnable {
 		{
 			// Start a Solace subscriber in its own thread
 			logger.debug("Creating Solace Ping Subscriber and starting thread");
-			SolacePingSubscriber solacePingSubscriber = new SolacePingSubscriber(parameters, session, producer, pongMessageOutputQueue, pingMessageProcessingQueue);
+			SolacePingSubscriber solacePingSubscriber = new SolacePingSubscriber(parameters, session, producer, pingMessageProcessingQueue);
 			Thread solaceSubcribeThread = new Thread(solacePingSubscriber);
 			solaceSubcribeThread.start();
 			
@@ -171,14 +166,6 @@ public class SolaceFactory implements Runnable {
 				Thread solacePingThread = new Thread(solacePingPublisher);
 				solacePingThread.start();
 			}
-			
-
-			// Start a Solace reflecting publisher in its own thread
-			// Update: Changed the program to reflect from the subscribing thread now. Don't need this anymore.
-//			logger.debug("Creating Solace Pong Reflector and starting thread");
-//			SolacePongReflector solacePongReflector = new SolacePongReflector(parameters, producer, pongMessageOutputQueue);
-//			Thread solaceReflectThread = new Thread(solacePongReflector);
-//			solaceReflectThread.start();
 			
 			// Start a Solace results publisher in its own thread
 			logger.debug("Creating Solace Results Publisher and starting thread");

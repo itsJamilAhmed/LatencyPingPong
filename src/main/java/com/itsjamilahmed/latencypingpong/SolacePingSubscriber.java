@@ -32,17 +32,13 @@ public class SolacePingSubscriber implements Runnable {
 	private JCSMPSession session;
 	private XMLMessageProducer producer;
 	private Map<String,Object> parameters;
-	@SuppressWarnings("unused")				// Previously used an interim queue and another thread to send the reflects (pongs). Keeping the structure in place for now.
-	private BlockingQueue<PingPongMessage> pongMessageOutputQueue;
 	private BlockingQueue<PingPongMessage> pingMessageProcessingQueue;
 	
 	public SolacePingSubscriber(Map<String,Object> parameters, JCSMPSession session, XMLMessageProducer producer,
-			BlockingQueue<PingPongMessage> pongMessageOutputQueue,
 			BlockingQueue<PingPongMessage> pingMessageProcessingQueue) {
 
 		this.parameters = parameters;
 		this.session = session;		// This class will be created with a reference to an existing valid and connected session.
-		this.pongMessageOutputQueue = pongMessageOutputQueue;			// The queue to put messages that are to be reflected back
 		this.pingMessageProcessingQueue = pingMessageProcessingQueue;	// The queue of final messages to calculate latency from
 		this.producer = producer;	// This class will be created with a reference to an existing Producer object and connected session
 									// since that is shared by all publishing threads.
@@ -103,12 +99,6 @@ public class SolacePingSubscriber implements Runnable {
 							
 							logger.debug("Successfully sent reflect message: " + reflectMsg.getText());	
 							
-	                		// Offer to insert into the queue if it is not full. Return immediately without blocking.
-	                		// Will return false if failed to insert, but ignore that and move on if any problems.
-//							pongMessageOutputQueue.offer(receivedMessage);
-//	                		logger.debug("Reflect message created and added to queue. Current queue depth: " + pongMessageOutputQueue.size());
-							
-							// UPDATE: The interim 'reflect' queue approach no longer used, but approach being kept in place in case need to re-add in future.
 	                	} 
 	                	else 
 	                	{
