@@ -59,8 +59,8 @@ public class LatencyPingPong {
 		
 		// Now use the provided args to setup the logging properties
 		setupLoggingProperties(parameters);
-		logger.info("LatencyPingPong Program started. This is node name: " + parameters.get("node_name").toString() + " in node group: " + parameters.get("node_group"));
 		logger.debug("Program started with arguments: " + parameters.toString());
+		logger.info("LatencyPingPong Program started. This is node name: " + parameters.get("node_name").toString() + " in node group: " + parameters.get("node_group"));
 
 		// The factory will be responsible for creating the threads to send, reflect, process results, etc.
 		// Going to be lazy and use the same Map<String, Objects> parameters object to pass all the pertinent values around
@@ -225,7 +225,7 @@ public class LatencyPingPong {
 					.help("The name to identify this ping-pong node with.	[Default: <Hostname> (" + detectedHostname + ") ]")
 					.setDefault(detectedHostname);
 		} catch (UnknownHostException e) {
-			nodeArgGroup.addArgument("--name")
+			nodeArgGroup.addArgument("-d", "--node-name")
 					.help("The name to identify this ping-pong node with.	(Required argument if hostname cannot be detected.)")
 					.required(true);
 		}
