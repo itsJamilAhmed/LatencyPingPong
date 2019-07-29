@@ -96,6 +96,8 @@ public class SolaceFactory implements Runnable {
 						if (e instanceof JCSMPTransportException){
 							// This one is quite serious, means there was an issue on the underlying TCP connection.
 							logger.error("A JCSMPTransportException occurred. Exception message -> " + e.getMessage());
+							logger.debug("Stack Trace: ",e);
+
 							// May as well terminate and start again
 							logger.error("*** Program will terminate now. ***");
 							System.exit(-1);
@@ -103,6 +105,8 @@ public class SolaceFactory implements Runnable {
 						else
 						{
 							logger.error("Producer received error for msg: " + messageID + " @ " + timestamp + " - " + e);
+							logger.debug("Stack Trace: ",e);
+
 						}
 					}
 				});
@@ -110,12 +114,18 @@ public class SolaceFactory implements Runnable {
 			catch (Exception e) {
 				if(e instanceof JCSMPTransportException){
 					logger.error("Could not connect to the Solace Message Router at " + parameters.get("connection_url").toString());
+					logger.debug("Stack Trace: ",e);
+
 				}
 				else if (e instanceof JCSMPException){
 					logger.error("Could not create Message Producer from the Session. Exception message -> " + e.getMessage());
+					logger.debug("Stack Trace: ",e);
+
 				}
 				else {
-					logger.error("An exception occured in the Solace Factory. Exception message -> " + e.getMessage());			
+					logger.error("An exception occured in the Solace Factory. Exception message -> " + e.getMessage());	
+					logger.debug("Stack Trace: ",e);
+
 				}
 			}
 		}

@@ -86,6 +86,8 @@ public class SolacePingSubscriber implements Runnable {
 								if (e instanceof JCSMPTransportException){
 									// This one is quite serious, means there was an issue on the underlying TCP connection.
 									logger.error("A JCSMPTransportException occurred. Exception message -> " + e.getMessage());
+									logger.debug("Stack Trace: ",e);
+
 									// May as well terminate and start again
 									logger.error("*** Program will terminate now. ***");
 									System.exit(-1);
@@ -93,8 +95,15 @@ public class SolacePingSubscriber implements Runnable {
 								else if (e instanceof JCSMPException)
 								{
 									logger.error("A JCSMPException occurred on reflect message send. Exception message ->" + e.getMessage());
+									logger.debug("Stack Trace: ",e);
+
 								}
-								logger.error("An Exception occurred during reflect message send. Exception message -> " + e.getMessage());
+								else
+								{
+									logger.error("An Exception occurred during reflect message send. Exception message -> " + e.getMessage());
+								logger.debug("Stack Trace: ",e);
+								}
+								
 							}
 							
 							logger.debug("Successfully sent reflect message: " + reflectMsg.getText());	
@@ -126,6 +135,8 @@ public class SolacePingSubscriber implements Runnable {
 	            	if (e instanceof JCSMPTransportException){
 						// This one is quite serious, means there was an issue on the underlying TCP connection.
 						logger.error("A JCSMPTransportException occurred. Exception message -> " + e.getMessage());
+						logger.debug("Stack Trace: ",e);
+
 						// May as well terminate and start again
 						logger.error("*** Program will terminate now. ***");
 						System.exit(-1);
@@ -133,6 +144,8 @@ public class SolacePingSubscriber implements Runnable {
 	            	else
 	            	{
 	            		logger.error("Consumer received an exception: " + e);
+						logger.debug("Stack Trace: ",e);
+
 	            	}
 	                
 	                //latch.countDown();  // unblock main thread so it can exit. Or what if the error is recoverable?
@@ -163,9 +176,13 @@ public class SolacePingSubscriber implements Runnable {
 		} catch (Exception e) {
 			if (e instanceof JCSMPException){
 				logger.error("A JCSMPException occurred. Exception message -> " + e.getMessage());
+				logger.debug("Stack Trace: ",e);
+
 			}
 			else {
-				logger.error("An exception occurred. Exception message -> " + e.getMessage());			
+				logger.error("An exception occurred. Exception message -> " + e.getMessage());
+				logger.debug("Stack Trace: ",e);
+
 			}
 		}
 	}

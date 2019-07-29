@@ -136,6 +136,8 @@ public class SolacePingPublisher implements Runnable {
 						if (e instanceof JCSMPTransportException){
 							// This one is quite serious, means there was an issue on the underlying TCP connection.
 							logger.error("A JCSMPTransportException occurred. Exception message -> " + e.getMessage());
+							logger.debug("Stack Trace: ",e);
+
 							// May as well terminate and start again
 							logger.error("*** Program will terminate now. ***");
 							System.exit(-1);
@@ -143,8 +145,12 @@ public class SolacePingPublisher implements Runnable {
 						else if (e instanceof JCSMPTransportException)
 						{
 							logger.error("A JCSMPException occurred on message send. Exception message ->" + e.getMessage());
+							logger.debug("Stack Trace: ",e);
+
 						}
 						logger.error("An Exception occurred during message send. Exception message -> " + e.getMessage());
+						logger.debug("Stack Trace: ",e);
+
 					}					
 					
 					// How many times have I run?
@@ -163,13 +169,17 @@ public class SolacePingPublisher implements Runnable {
 		} catch (Exception e) {
 			if (e instanceof JCSMPException){
 				logger.error("A JCSMPException occurred. Exception message -> " + e.getMessage());
+				logger.debug("Stack Trace: ",e);
 			}
 			else if (e instanceof NullPointerException){
 				// Shouldn't really trigger unless something has been coded wrong...
 				logger.error("A NullPointerException occurred.");
+				logger.debug("Stack Trace: ",e);
 			}
 			else {
-				logger.error("An exception occurred. Exception message -> " + e.getMessage());			
+				logger.error("An exception occurred. Exception message -> " + e.getMessage());
+				logger.debug("Stack Trace: ",e);
+
 			}
 		}
 	}

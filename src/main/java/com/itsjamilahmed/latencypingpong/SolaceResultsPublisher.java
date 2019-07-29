@@ -204,15 +204,17 @@ public class SolaceResultsPublisher implements Runnable {
 					if (e instanceof JCSMPException)
 					{
 						logger.error("A JCSMPException occurred. Exception message -> " + e.getMessage());
+						logger.debug("Stack Trace: ",e);
 					}
 					else if (e instanceof NullPointerException){
 						// Shouldn't really be triggering this in normal operation...
 						logger.error("A NullPointerException occurred.");
-						logger.error(e.getStackTrace().toString());
+						logger.debug("Stack Trace: ",e);
 					}
 					else 
 					{
-						logger.error("An exception occurred. Exception message -> " + e.getMessage());			
+						logger.error("An exception occurred. Exception message -> " + e.getMessage());
+						logger.debug("Stack Trace: ",e);
 					}	
 				}
 				
