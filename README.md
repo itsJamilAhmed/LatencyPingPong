@@ -36,7 +36,12 @@ This program is the basis of the Multi-Cloud Arbitrage demonstration that is ava
 
 In that deployment a single pinger program is running on a 5-second ping period, with 9 simultaneous ponger instances deployed across the three regions of US-East, UK and Singapore, in the three public cloud providers of AWS, Azure and Google. 
 
+### Node Names and Node Groups
+The program has the concept of a node name and node-group to identify each pinger or ponger instance. In the default case, the node name is taken to be the hostname and the node-group is the value `Common`. This means that all pongers are in the same group and when their arrival ranking is determined for the Summary message, they are all in the same 'competition group'. 
 
+In the example deployment above with 9 pongers, the pongers in each country are in competition with each other, but not with pongers in another country. Therefore it can be considered that there are three racing groups to configure, with node-group names of `US`, `UK` and `SG` selected used to represent the country they are deployed in.  
+
+Then within each node-group, there are three nodes to represent the three cloud providers available per country. Therefore the node names are `AWS`, `Azure` and `Google`, repeated across the three node-groups of `US`, `UK` and `SG`. 
 
 ## Checking out and build instructions
 
