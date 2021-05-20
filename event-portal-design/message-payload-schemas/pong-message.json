@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Pong Message Schema",
+  "type": "object",
+  "properties": {
+    "r": {
+      "type": "boolean",
+      "description": "Is this a reflected pong message?"
+    },
+    "ns": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "High resolution (nanosecond) timestamp collected at the time of ping message generation."
+    },
+    "rg": {
+      "type": "string",
+      "description": "node-group name of the reflected pong message sender"
+    },
+    "v": {
+      "type": "boolean",
+      "description": "Is this a valid message?"
+    },
+    "ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Standard resolution (milliseconds) timestamp collected at the time of the ping message generation."
+    },
+    "g": {
+      "type": "string",
+      "description": "node-group name of the ping message sender"
+    },
+    "rn": {
+      "type": "string",
+      "description": "node name of the reflected pong message sender"
+    },
+    "n": {
+      "type": "string",
+      "description": "node name of the ping message sender"
+    }
+  },
+  "required": [
+    "r",
+    "ns",
+    "rg",
+    "v",
+    "ms",
+    "g",
+    "rn",
+    "n"
+  ]
+}

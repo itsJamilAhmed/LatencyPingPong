@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Results Message Schema",
+  "type": "object",
+  "properties": {
+    "rtt": {
+      "type": "string",
+      "description": "The calculated round-trip-time latency in milliseconds for the ping-pong interaction."
+    },
+    "from": {
+      "type": "string",
+      "description": "The node-group and node-name combination that originated the ping message. (node-group:node-name)"
+    },
+    "to": {
+      "type": "string",
+      "description": "The node-group and node-name combination that successfully received the the ping message. (node-group:node-name)"
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "The date and time of the original ping message. (e.g. 2021-05-19 04:42:05.994 BST)"
+    }
+  },
+  "required": [
+    "rtt",
+    "from",
+    "to",
+    "timestamp"
+  ]
+}
